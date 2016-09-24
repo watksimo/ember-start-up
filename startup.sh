@@ -37,7 +37,7 @@ npm install -g phantomjs-prebuilt
 ember new $1 --skip-npm
 cd $1
 npm install
-bower install
+bower install --allow-root
 IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 echo "To test the Ember server is working, navigate to: http://$IP:4200"
 ember server
