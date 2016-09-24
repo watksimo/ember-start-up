@@ -36,4 +36,6 @@ npm install -g phantomjs-prebuilt
 # Create ember project
 ember new $1
 cd $1
+IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+echo "To test the Ember server is working, navigate to: http://$IP:4200"
 ember server
