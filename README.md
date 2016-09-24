@@ -20,6 +20,6 @@ The purpose of this is to document how to start up a Digital Ocean droplet runni
     # ./startup.sh new-app
     ```
 
-4. The ember server is started at the end of the script to test everything worked. Navigate to the url output by the script before the server started, it should noew display the 'Welcome to Ember' page.
+4. The ember server is started at the end of the script to test everything worked. Navigate to the url output by the script before the server started, it should now display the 'Welcome to Ember' page.
 
 5. New ember projects can now be created and modified.
