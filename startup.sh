@@ -1,8 +1,14 @@
 #!/bin/sh
-if [ $# -ne 1 ]
-  then
-    echo "Usage: ./startup.sh FILENAME"
+if [ $# -ne 2 ]
+then
+    echo "Usage: ./startup.sh USERNAME FILENAME"
     exit 1
+fi
+
+if [ "$(id -u)" != "0" ]
+then
+  echo "Must be root to run this script."
+  exit 1
 fi
 
 # Set vim config
@@ -14,6 +20,20 @@ set expandtab
 colorscheme desert
 ENDVIMCONFIG
 ) > ~/.vimrc
+
+# Create user
+username="$1"
+pass="$1"
+grep -q "$username" /etc/passwd
+if [ $? -eq 0 ] 
+then    
+    echo "User $username already exists."
+else
+    useradd -p `mkpasswd "$pass"` -d /home/"$username" -m -g users -s /bin/bash "$username"
+    echo "$username  ALL=(ALL:ALL) ALL" >> /etc/sudoers
+    echo "Account $username is setup as sudoer."
+fi
+
 
 # Create 4G swap file
 ## Without this npm installs fail with 'KILLED'
@@ -34,8 +54,8 @@ npm install -g bower
 npm install -g phantomjs-prebuilt
 
 # Create ember project
-ember new $1 --skip-npm
-cd $1
+ember new $2 --skip-npm
+cd $2
 npm install
 bower install --allow-root
 IP=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
