@@ -11,29 +11,7 @@ then
   exit 1
 fi
 
-# Set vim config
-(
-cat <<'ENDVIMCONFIG'
-set tabstop=4
-set shiftwidth=4
-set expandtab
-colorscheme desert
-ENDVIMCONFIG
-) > ~/.vimrc
-
-# Create user
-username="$1"
-pass="$1"
-grep -q "$username" /etc/passwd
-if [ $? -eq 0 ] 
-then    
-    echo "User $username already exists."
-else
-    useradd -p `mkpasswd "$pass"` -d /home/"$username" -m -g users -s /bin/bash "$username"
-    echo "$username  ALL=(ALL:ALL) ALL" >> /etc/sudoers
-    echo "Account $username is setup as sudoer."
-fi
-
+./ubuntu_config.sh $1
 
 # Create 4G swap file
 ## Without this npm installs fail with 'KILLED'
